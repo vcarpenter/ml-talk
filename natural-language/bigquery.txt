@@ -1,0 +1,34 @@
+# Create a Table
+id:STRING,text:STRING,created_at:STRING,user_followers_count:INTEGER,hashtags:STRING,tokens:STRING,score:STRING,magnitude:STRING,location:STRING
+
+
+#Query Sentiment
+SELECT FLOAT (score) as sentiment, magnitude, text 
+from [<project_id>:twitter_sentiment_dataset.tweets] 
+where text contains "#google"  
+ORDER BY sentiment ASC, magnitude
+
+
+#Query Adjectives
+SELECT COUNT(*) as adj_count, adjective
+FROM
+JS(
+(SELECT tokens FROM [<project_id>:ml_demo_twitter_sentiment.tweets] where text contains "trump"),
+tokens,
+"[{name:'adjective', type:'string'}]",
+"function(row,emit){
+	try {
+		x = JSON.parse(row.tokens);
+		x.forEach(function(token){
+			if (token.partOfSpeech.tag === 'ADJ') {
+				emit({adjective: token.lemma.toLowerCase()});
+			}
+		});
+	} catch (e) {}
+
+	}"
+)
+GROUP BY adjective
+ORDER BY adj_count DESC
+LIMIT 100
+
