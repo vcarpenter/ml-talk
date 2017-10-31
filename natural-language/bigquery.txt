@@ -1,5 +1,6 @@
 # Create a Table
-id:STRING,text:STRING,created_at:STRING,user_followers_count:INTEGER,hashtags:STRING,tokens:STRING,score:STRING,magnitude:STRING,location:STRING
+id:STRING,text:STRING,created_at:STRING,user_followers_count:INTEGER,hashtags:STRING,
+tokens:STRING,score:STRING,magnitude:STRING,location:STRING
 
 
 #Query Sentiment
